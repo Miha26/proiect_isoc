@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # Mongo pentru user-service
+  mongo-users:
+    image: mongo
+    container_name: mongo-users
+    ports:
+      - "27017:27017"
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    depends_on:
+      - mongo-users
+    ports:
+      - "8001:8000"
+
+  # Mongo pentru note-service
+  mongo-notes:
+    image: mongo
+    container_name: mongo-notes
+    ports:
+      - "27018:27017"
+
+  note-service:
+    build: ./note-service
+    container_name: note-service
+    depends_on:
+      - mongo-notes
+    ports:
+      - "8002:8000"
+
+  # Mongo pentru tag-service
+  mongo-tags:
+    image: mongo
+    container_name: mongo-tags
+    ports:
+      - "27019:27017"
+
+  tag-service:
+    build: ./tag-service
+    container_name: tag-service
+    depends_on:
+      - mongo-tags
+    ports:
+      - "8003:8000"
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    depends_on:
+      - user-service
+      - note-service
+      - tag-service
+    ports:
+      - "8080:8000"
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "8081:80"
+    depends_on:
+      - gateway

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="style.css" />
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notițele Mele</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Notițele tale</h1>
+  <button onclick="logout()">Logout</button>
+
+  <h2>Adaugă notiță</h2>
+  <input type="text" id="title" placeholder="Titlu">
+  <textarea id="content" placeholder="Conținut"></textarea>
+  <button onclick="createNote()">Adaugă</button>
+
+  <h2>Lista</h2>
+  <ul id="notes-list"></ul>
+
+  <script src="auth.js"></script>
+  <script src="notes.js"></script>
+</body>
+</html>
