@@ -2,12 +2,16 @@ from fastapi import FastAPI, HTTPException
 from pymongo import MongoClient
 from pydantic import BaseModel
 from bson import ObjectId
-import os 
+import os
 
 app = FastAPI()
 
-# Conectare la MongoDB (port default 27017)
-client = MongoClient(os.getenv("MONGO_URI"))
+# 🟢 Conectare la MongoDB Atlas folosind variabila de mediu
+mongo_uri = os.getenv("MONGO_URI")
+if not mongo_uri:
+    raise RuntimeError("MONGO_URI is not set in environment variables!")
+
+client = MongoClient(mongo_uri)
 db = client["user_db"]
 users_collection = db["users"]
 
@@ -24,7 +28,10 @@ def register(user: User):
 
 @app.post("/login")
 def login(user: User):
-    found = users_collection.find_one({"username": user.username, "password": user.password})
+    found = users_collection.find_one({
+        "username": user.username,
+        "password": user.password
+    })
     if not found:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     return {"message": "Login successful", "user_id": str(found["_id"])}
