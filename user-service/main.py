@@ -2,11 +2,12 @@ from fastapi import FastAPI, HTTPException
 from pymongo import MongoClient
 from pydantic import BaseModel
 from bson import ObjectId
+import os 
 
 app = FastAPI()
 
 # Conectare la MongoDB (port default 27017)
-client = MongoClient("mongodb://mongo-users:27017/")
+client = MongoClient(os.getenv("MONGO_URI"))
 db = client["user_db"]
 users_collection = db["users"]
 

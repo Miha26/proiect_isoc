@@ -59,6 +59,6 @@ services:
     build: ./frontend
     container_name: frontend
     ports:
-      - "8081:80"
+      - "8081:8000"
     depends_on:
       - gateway

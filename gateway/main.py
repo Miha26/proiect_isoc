@@ -1,8 +1,10 @@
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
 import httpx
+import os
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,10 +20,12 @@ class Note(BaseModel):
     user_id: str
 
 # Baze URL pentru microservicii
-USER_SERVICE_URL = "http://user-service:8000"
-NOTE_SERVICE_URL = "http://note-service:8000"
-TAG_SERVICE_URL = "http://tag-service:8000"
 
+
+USER_SERVICE_URL = os.getenv("USER_SERVICE_URL")
+NOTE_SERVICE_URL = os.getenv("NOTE_SERVICE_URL")
+TAG_SERVICE_URL = os.getenv("TAG_SERVICE_URL")
+print("USER_SERVICE_URL =", USER_SERVICE_URL)
 class User(BaseModel):
     username: str
     password: str
